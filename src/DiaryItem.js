@@ -1,7 +1,31 @@
-const DiaryItem = ({ diaryList }) => {
+import { useEffect, useRef, useState } from "react";
+
+const DiaryItem = ({ diaryList, onRemove, onEdit }) => {
+  const handleRemove = () => {
+    if (window.confirm(`${diaryList.id}번째 일기를 정말 삭제하시겠습니까??`)) {
+      onRemove(diaryList.id);
+    }
+  };
+
+  // const test = useEffect(() => {
+  //   console.log(diaryList);
+  // }, []);
+
+  const [isEdit, setIsEdit] = useState(false);
+  const toggleIsEdit = () => {
+    setIsEdit(!isEdit);
+  };
+  const [localContent, setLocalContent] = useState(diaryList.content);
+  const localContentInput = useRef();
+
+  const handleQuitEdit = () => {
+    console.log(diaryList.id);
+    setIsEdit(!isEdit);
+    setLocalContent(diaryList.content);
+  };
   return (
-    <div className="DiaryItem">
-      <div className="info" key={diaryList.id}>
+    <div className="DiaryItem" key={diaryList.id}>
+      <div className="info">
         <span>
           작성자 : {diaryList.author} | 감정 점수 : {diaryList.emotion}
         </span>
@@ -10,7 +34,43 @@ const DiaryItem = ({ diaryList }) => {
           {new Date(diaryList.created_date).toLocaleDateString()}
         </span>
       </div>
-      <div className="content">{diaryList.content}</div>
+      <div className="content">
+        {isEdit ? (
+          <textarea
+            onChange={(e) => {
+              setLocalContent(e.target.value);
+            }}
+            ref={localContentInput}
+            value={localContent}
+          />
+        ) : (
+          <>{diaryList.content}</>
+        )}
+      </div>
+      {isEdit ? (
+        <>
+          <button onClick={handleQuitEdit}>수정 취소</button>
+          <button
+            onClick={() => {
+              if (localContent.length < 5) {
+                localContentInput.current.focus();
+                return;
+              }
+              if (window.confirm(`일기를 수정 하시겠습니까??`)) {
+                onEdit(diaryList.id, localContent);
+                setIsEdit(!isEdit);
+              }
+            }}
+          >
+            수정 완료
+          </button>
+        </>
+      ) : (
+        <>
+          <button onClick={handleRemove}>삭제하기</button>
+          <button onClick={toggleIsEdit}>수정하기</button>
+        </>
+      )}
     </div>
   );
 };
