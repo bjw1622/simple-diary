@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 const DiaryItem = ({ diaryList, onRemove, onEdit }) => {
   const handleRemove = () => {
@@ -6,10 +6,6 @@ const DiaryItem = ({ diaryList, onRemove, onEdit }) => {
       onRemove(diaryList.id);
     }
   };
-
-  // const test = useEffect(() => {
-  //   console.log(diaryList);
-  // }, []);
 
   const [isEdit, setIsEdit] = useState(false);
   const toggleIsEdit = () => {
