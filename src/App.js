@@ -61,6 +61,7 @@ const App = () => {
   };
 
   // useMemo는 Memoization
+  // 성능 최적화
   // 성능 향상을 위해서
   // 데이터의 전체 길이가 바뀔때만 getDiaryAnalysis를 호출해라!!
   // useMemo는 함수가 아닌 콜백함수의 값 리턴 값을 갖게 된다
