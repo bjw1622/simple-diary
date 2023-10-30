@@ -2,6 +2,7 @@ import DiaryEditor from "./DiaryEditor";
 import "./App.css";
 import DiaryList from "./DiaryList";
 import { useEffect, useMemo, useRef, useState } from "react";
+import OptimizeTest from "./OptimizeTest";
 
 // https://jsonplaceholder.typicode.com/comments
 
@@ -77,6 +78,8 @@ const App = () => {
   const { goodCount, badCount, goodRatio } = getDiaryAnalysis;
   return (
     <div className="App">
+      {/* UseMemo로 성능 최적화 => 이 때 props가 객체 상태이면 값 비교 후 React Memo */}
+      {/* <OptimizeTest /> */}
       <DiaryEditor onCreate={onCreate} />
       <div>전체 일기 : {data.length}</div>
       <div>기분 좋은 일기 개수 : {goodCount}</div>
