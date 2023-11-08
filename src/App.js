@@ -1,8 +1,7 @@
 import DiaryEditor from "./DiaryEditor";
 import "./App.css";
 import DiaryList from "./DiaryList";
-import { useEffect, useMemo, useRef, useState } from "react";
-import OptimizeTest from "./OptimizeTest";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 // https://jsonplaceholder.typicode.com/comments
 
@@ -32,7 +31,7 @@ const App = () => {
     getData();
   }, []);
 
-  const onCreate = (author, content, emotion) => {
+  const onCreate = useCallback((author, content, emotion) => {
     const created_date = new Date().getTime();
     const newItem = {
       author,
@@ -42,23 +41,20 @@ const App = () => {
       id: dataId.current,
     };
     dataId.current += 1;
-    setData([newItem, ...data]);
-  };
+    setData((data) => [newItem, ...data]);
+  }, []);
 
-  const onRemove = (targetId) => {
-    const newDiarytList = data.filter((it) => {
-      return it.id !== targetId;
-    });
-    setData(newDiarytList);
-  };
+  const onRemove = useCallback((targetId) => {
+    setData((data) => data.filter((it) => it.id !== targetId));
+  }, []);
 
-  const onEdit = (targetId, newContent) => {
-    setData(
-      data.map((it) => {
-        return it.id === targetId ? { ...it, content: newContent } : it;
-      })
+  const onEdit = useCallback((targetId, newContent) => {
+    setData((data) =>
+      data.map((it) =>
+        it.id === targetId ? { ...it, content: newContent } : it
+      )
     );
-  };
+  });
 
   // useMemo는 Memoization
   // 성능 최적화

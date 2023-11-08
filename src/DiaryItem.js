@@ -1,6 +1,9 @@
-import { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const DiaryItem = ({ diaryList, onRemove, onEdit }) => {
+  useEffect(() => {
+    console.log(`${diaryList.id}번 째 아이템 렌더`);
+  });
   const handleRemove = () => {
     if (window.confirm(`${diaryList.id}번째 일기를 정말 삭제하시겠습니까??`)) {
       onRemove(diaryList.id);
@@ -20,7 +23,7 @@ const DiaryItem = ({ diaryList, onRemove, onEdit }) => {
     setLocalContent(diaryList.content);
   };
   return (
-    <div className="DiaryItem" key={diaryList.id}>
+    <div className="DiaryItem">
       <div className="info">
         <span>
           작성자 : {diaryList.author} | 감정 점수 : {diaryList.emotion}
@@ -75,4 +78,4 @@ DiaryItem.defaultProps = {
   diaryList: [],
 };
 
-export default DiaryItem;
+export default React.memo(DiaryItem);
